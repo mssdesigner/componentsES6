@@ -37,7 +37,7 @@
 		crossorigin="anonymous"></script>
 
 	<script type="module">
-		import Dropdown from './components/Dropdown.js';
+		import dropdown from './components/dropdown.js';
 
 		const func = item => console.log(item);
 
@@ -45,14 +45,14 @@
 			let data = await (await fetch('https://reqres.in/api/users')).json();
 			const model = data.data;
 
-			window.drop1 = Dropdown('#drop1', model, "id", "last_name");
+			window.drop1 = dropdown('#drop1', model, "id", "last_name");
 			drop1.create();
 			drop1.callback(func);
 
-			window.drop2 = Dropdown('#drop2');
+			window.drop2 = dropdown('#drop2');
 			drop2.create();
 
-			window.drop3 = Dropdown('#drop3');
+			window.drop3 = dropdown('#drop3');
 			drop3.create();
 		}
 
