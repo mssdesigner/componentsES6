@@ -1,11 +1,11 @@
-function Dropdown(reference, model = [], id, label) {
+const Dropdown = (reference, model = [], id, label) => {
 
     const config = {
         id,
         label,
         containerList: null,
         button: null,
-        reference: $(reference),        
+        reference: $(reference),
         model: JSON.parse(JSON.stringify(model)),
         styleId: "dropdown",
         css: `.dropdown-item:focus, .dropdown-item:hover { color: #fff; text-decoration: none; background-color: #007bff; }
@@ -14,7 +14,7 @@ function Dropdown(reference, model = [], id, label) {
             .dropdown-toggle::after { position: relative; top: 8px; float: right; }`
     }
 
-    function create(selected) {
+    const create = selected => {
         load();
 
         if (selected != undefined)
@@ -24,7 +24,7 @@ function Dropdown(reference, model = [], id, label) {
         loadEvents();
     }
 
-    function load() {
+    const load = () => {
         const { reference } = config;
         const drop = reference.find(".dropdown");
 
@@ -36,16 +36,14 @@ function Dropdown(reference, model = [], id, label) {
         config.button = reference.find(".dropdown-toggle");
     }
 
-    function createSelected(selected) {
+    const createSelected = selected => {
         const { containerList, button } = config;
-        const newLabel = containerList.find("a").filter(function (i, e) {
-            return e.id == selected;
-        });
+        const newLabel = containerList.find("a").filter((i, e) => e.id == selected);
         button.html(newLabel.html());
         button.attr("value", selected);
     }
 
-    function template() {
+    const template = () => {
         const { model, id, label } = config;
         return `
         <div class='dropdown'>
@@ -57,8 +55,8 @@ function Dropdown(reference, model = [], id, label) {
         `
     }
 
-    function loadEvents() {
-        config.containerList.find("a").off().click(function (e) {
+    const loadEvents = () => {
+        config.containerList.find("a").off().click((e) => {
             const { model, id, callback } = config;
             updateButtonText(e);
             const obj = {};
@@ -71,7 +69,7 @@ function Dropdown(reference, model = [], id, label) {
         });
     }
 
-    function loadCss() {
+    const loadCss = () => {
         const { styleId, css } = config;
         if ($(document.head).find("style#" + styleId).length === 0) {
             const styleSheet = document.createElement("style");
@@ -82,7 +80,7 @@ function Dropdown(reference, model = [], id, label) {
         }
     }
 
-    function updateButtonText(e) {
+    const updateButtonText = e => {
         const { button, containerList } = config;
         const element = $(e.target);
         const id = element.attr("id");
@@ -90,14 +88,14 @@ function Dropdown(reference, model = [], id, label) {
 
         button.attr("value", id).html(text);
 
-        containerList.find("a").map(function () {
+        containerList.find("a").map(() => {
             if ($(this).html() == "Selecione") {
                 $(this).remove()
             }
         });
     }
 
-    function getItem() {
+    const getItem = () => {
         const { id, model } = config;
         const obj = {};
         obj[id || 'id'] = parseInt(this.getId());
@@ -109,9 +107,9 @@ function Dropdown(reference, model = [], id, label) {
         return null;
     }
 
-    function setDropdown(idDrop) {
+    const setDropdown = idDrop => {
         const { containerList, button, id, model, callback } = config;
-        const findId = containerList.find("a").filter(function (i, e) { return $(e).attr("id") == idDrop })
+        const findId = containerList.find("a").filter((i, e) => $(e).attr("id") == idDrop)
 
         if (findId.length > 0) {
             button.html(findId.html()).attr("value", findId.attr("id"));
@@ -123,7 +121,7 @@ function Dropdown(reference, model = [], id, label) {
         }
     }
 
-    function setDropdownByIndex(index) {
+    const setDropdownByIndex = index => {
         const { containerList, button, id, model, callback } = config;
         const findIndex = containerList.find("a").eq(index);
 
@@ -135,7 +133,7 @@ function Dropdown(reference, model = [], id, label) {
         }
     }
 
-    function showFilter() {
+    const showFilter = () => {
         const { containerList } = config;
         const filter = $("#dropdown-filter");
         const template = "<div id='dropdown-filter' class='px-2 mb-1'><input class='form-control form-control-sm' type='text' placeholder='Pesquisar'></div>";
@@ -143,24 +141,23 @@ function Dropdown(reference, model = [], id, label) {
             filter.remove();
         }
         $(template).insertBefore(containerList.find("a").eq(0));
-        $("#dropdown-filter input").off().on("keyup", function (e) {
-            filterList(e)
-        });
+        $("#dropdown-filter input").off().on("keyup", (e) => filterList(e));
     }
 
-    function filterList(e) {
+    const filterList = e => {
         const ref = $(e.currentTarget);
         const word = ref.val().toUpperCase();
         const itens = config.containerList.find("a");
         const regex = new RegExp();
 
-        itens.each(function () {
+        itens.each((i, element) => {
+            let _self = element;
             regex.compile(word)
-            regex.test($(this).text().toUpperCase()) ? $(this).show() : $(this).hide();
+            regex.test($(_self).text().toUpperCase()) ? $(_self).show() : $(_self).hide();
         });
     }
 
-    function updateDropdown(newItem) {
+    const updateDropdown = newItem => {
         if (Array.isArray(newItem)) {
             config.model = newItem
             create();
@@ -195,7 +192,7 @@ function Dropdown(reference, model = [], id, label) {
         callback: func => config.callback = func,
         getId: () => config.button.attr("value"),
         getLabel: () => config.button.html(),
-        getItemByIndex: index => config.model[index]    
+        getItemByIndex: index => config.model[index]
     }
 }
 
