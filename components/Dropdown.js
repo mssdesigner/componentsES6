@@ -7,7 +7,7 @@ function Dropdown(reference, model = [], id, label) {
         button: null,
         reference: $(reference),        
         model: JSON.parse(JSON.stringify(model)),
-        styleId: "list-item",
+        styleId: "dropdown",
         css: `.dropdown-item:focus, .dropdown-item:hover { color: #fff; text-decoration: none; background-color: #007bff; }
             .dropdown-menu { width: 100%; max-height: 200px; overflow: auto; min-width: initial; }
             .dropdown { min-width: 80px; width:100%; text-align:left; }
@@ -185,17 +185,17 @@ function Dropdown(reference, model = [], id, label) {
     }
 
     return {
-        create: selected => create(selected),
-        updateDropdown: newItem => updateDropdown(newItem),
+        create,
+        updateDropdown,
+        setDropdown,
+        setDropdownByIndex,
+        showFilter,
+        getItem,
+        disableDropdown: (flag = false) => config.button.prop("disabled", flag),
         callback: func => config.callback = func,
         getId: () => config.button.attr("value"),
         getLabel: () => config.button.html(),
-        getItemByIndex: index => config.model[index],
-        setDropdown: id => setDropdown(id),
-        setDropdownByIndex: index => setDropdownByIndex(index),
-        disableDropdown: (flag = false) => config.button.prop("disabled", flag),
-        showFilter,
-        getItem
+        getItemByIndex: index => config.model[index]    
     }
 }
 
